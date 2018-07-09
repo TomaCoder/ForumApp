@@ -1,0 +1,53 @@
+﻿@using ForumApp.Models;
+
+@model List<PostViewModel>
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+
+	//ViewBag.Title = "Home Page";
+}
+<div class="container">
+	<div class="page-header text-center">
+		<h1 id="timeline">Posts</h1>
+	</div>
+	<div class="row">
+		<section class="content">
+			<div class="col-md-8 col-md-offset-2">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<div class="table-container">
+							<table class="table table-filter">
+								<tbody>
+									@foreach (var item in Model)
+									{
+										<tr data-status="pagado">
+											<td>
+												<div class="media">
+													<div class="media-body">
+														<span class="media-meta pull-right"> @item.CreatedDate </span>
+														<p>
+															@item.Text <br />
+														</p>
+														<p>
+															Poted By: @item.NickName <br />
+															Posted at: @item.CreatedDate <br />
+															User total post count: @item.NumPosts <br />
+															Registered at: @item.UserCreatedOn <br />
+															Location: @item.City, @item.Country<br />
+														</p>
+													</div>
+												</div>
+											</td>
+										</tr>
+									}
+									</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+	</div>
+</div>

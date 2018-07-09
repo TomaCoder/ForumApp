@@ -1,0 +1,51 @@
+﻿@using ForumApp.Models;
+
+@model List<TopicViewModel>
+
+@{
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+	<div class="page-header text-center">
+		<h1 id="timeline">Topics</h1>
+	</div>
+	<div class="row">
+		<div class="span12">
+			<ul class="thumbnails">
+				@foreach (var item in Model)
+				{
+					<li class="span5 clearfix">
+						<div class="thumbnail clearfix">
+							<input type="hidden" value="@item.TopicID" />
+							<div class="caption" class="pull-left">
+								<a href="@Url.Action("Details", "Topics", new { ID = item.TopicID })" id="btnTopic" class="btn btn-primary icon  pull-right">Select</a>
+								<h4>
+									<a href="#">@item.Name</a>
+								</h4>
+								<h5>
+									<a href="#">@item.NickName</a>
+								</h5>
+								<small>
+									Last post: @(string.IsNullOrEmpty(item.ThreadName) ? "" : "Re: " + item.ThreadName)<br />
+									Posted at: @item.PostCreatedOn <br />
+									Total replies: @item.NumPosts
+								</small>
+							</div>
+						</div>
+					</li>
+				}
+			</ul>
+		</div>
+	</div>
+</div>
+<script>
+
+	document.body.onload = function () {
+		$('.thumbnail.clearfix').click(function (e) {
+			var topicID = $(this).find('input[type=hidden]').val();
+			location.href = '@Url.Action("Details", "Topics")' + '/' + topicID;
+			})
+	}
+
+</script>
