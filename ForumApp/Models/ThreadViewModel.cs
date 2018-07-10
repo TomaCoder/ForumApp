@@ -13,6 +13,5 @@ namespace ForumApp.Models
 		public string Description { get; set; }
 		public DateTime? CreatedDate { get; set; }
 		public DateTime? PostCreatedOn { get; set; }
-		
 	}
 }

@@ -37,6 +37,7 @@
 			if (!name.length) {
 				return alert('Name field can not be empty.');
 			}
+
 			$.ajax({
 				type: "POST",
 				url: '/Threads/AddThread',
