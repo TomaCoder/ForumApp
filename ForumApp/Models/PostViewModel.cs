@@ -13,6 +13,8 @@ namespace ForumApp.Models
 		public string City { get; set; }
 		public string Country { get; set; }
 		public DateTime? CreatedDate { get; set; }
+		public string PostCreated { get; set; }
 		public DateTime? UserCreatedOn { get; set; }
+		public string UserCreated { get; set; }
 	}
 }

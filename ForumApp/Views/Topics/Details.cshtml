@@ -4,10 +4,13 @@
 
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
+	var topic = ViewBag.topicDetails;
+
 }
 <div class="container">
+<input type="hidden" id="topicID" value="@topic.TopicID"/>
 	<div class="page-header text-center">
-		<h1 id="timeline">Threads</h1>
+		<h1 id="timeline">Threads of @topic.Name topic</h1>
 	</div>
 	<ul class="timeline">
 
@@ -20,9 +23,20 @@
 					</div>
 					<div class="timeline-body">
 						<p>
-							@item.Name <br />
-							Last post: @item.NickName <br />
-							Posted at: @item.PostCreatedOn <br />
+							<a href="@Url.Action("Details", "Threads", new { ID = item.ThreadID })">
+								@item.Name
+							</a> <br />
+						<p>
+							@if (item.NumPosts > 0)
+							{
+								<span>Last posted by:</span> @item.NickName<br />
+								<span>Last posted on:</span> @item.PostCreatedOn<br />
+							}
+							else
+							{
+								<span>No posts yet</span>
+							}
+
 						</p>
 					</div>
 
@@ -37,5 +51,6 @@
 			</li>
 		}
 		<li class="clearfix" style="float: none;"></li>
+		<button type="button" title="Add Thread" id="btnAddThread" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-plus"></i></button>
 	</ul>
 </div>

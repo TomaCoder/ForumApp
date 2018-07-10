@@ -16,8 +16,69 @@ namespace ForumApp.Controllers
 		public ViewResult Details(int id) // topicid
 		{
 			ThreadsController controller = new ThreadsController();
+			ViewBag.topicDetails = GetDataRecord(id);
 
 			return View("Details", controller.GetDataCollection(id));
+		}
+
+		//public TopicViewModel AddTopic(TopicViewModel vm){
+		//	using (SqlConnection con = new SqlConnection(ConnectionString))
+		//	{
+		//		using (SqlCommand cmd = new SqlCommand("InsertTopic", con))
+		//		{
+		//			cmd.CommandType = CommandType.StoredProcedure;
+		//			cmd.Parameters.Add("@TopicID", SqlDbType.Int).Value = topicID;
+
+		//			con.Open();
+		//			SqlDataReader reader = cmd.ExecuteReader();
+		//			while (reader.Read())
+		//			{
+		//				vm = new TopicViewModel
+		//				{
+		//					TopicID = (int)reader["TopicID"],
+		//					UserID = (int)reader["UserID"],
+		//					Name = reader["Name"].ToString(),
+		//					CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"])
+		//				};
+		//			}
+
+		//			reader.Close();
+		//			con.Close();
+		//		}
+		//	}
+
+		//	return vm;
+		//}
+
+		public TopicViewModel GetDataRecord(int topicID)
+		{
+			TopicViewModel vm = null;
+			using (SqlConnection con = new SqlConnection(ConnectionString))
+			{
+				using (SqlCommand cmd = new SqlCommand("GetTopicDetails", con))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					cmd.Parameters.Add("@TopicID", SqlDbType.Int).Value = topicID;
+
+					con.Open();
+					SqlDataReader reader = cmd.ExecuteReader();
+					while (reader.Read())
+					{
+						vm = new TopicViewModel
+						{
+							TopicID = (int)reader["TopicID"],
+							UserID = (int)reader["UserID"],
+							Name = reader["Name"].ToString(),
+							CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"])
+						};
+					}
+
+					reader.Close();
+					con.Close();
+				}
+			}
+
+			return vm;
 		}
 
 		public List<TopicViewModel> GetDataCollection(int? id = null)

@@ -5,6 +5,8 @@ using System.Web.Mvc;
 using System.Collections.Generic;
 
 using ForumApp.Models;
+using System.Web;
+using ForumApp.Helpers;
 
 namespace ForumApp.Controllers
 {
@@ -16,7 +18,82 @@ namespace ForumApp.Controllers
 		public ViewResult Details(int id){
 			PostsController controller = new PostsController();
 
+			ViewBag.threadDetails = GetDataRecord(id);
 			return View("Details", controller.GetDataCollection(id));
+		}
+
+		[FormatException]
+		public ThreadViewModel AddThread(ThreadViewModel vm)
+		{
+			try
+			{
+				using (SqlConnection con = new SqlConnection(ConnectionString))
+				{
+					using (SqlCommand cmd = new SqlCommand("InsertThread", con))
+					{
+						cmd.CommandType = CommandType.StoredProcedure;
+						cmd.Parameters.Add("@TopicID", SqlDbType.Int).Value = vm.TopicID;
+						cmd.Parameters.Add("@UserID", SqlDbType.Int).Value = (int)System.Web.HttpContext.Current.Session["UserID"];
+						cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = vm.Name;
+						cmd.Parameters.Add("@Description", SqlDbType.NVarChar).Value = vm.Description;
+
+						con.Open();
+						SqlDataReader reader = cmd.ExecuteReader();
+						while (reader.Read())
+						{
+							vm = new ThreadViewModel
+							{
+								TopicID = (int)reader["TopicID"],
+								ThreadID = (int)reader["ThreadID"],
+								UserID = (int)reader["UserID"],
+								Name = reader["Name"].ToString(),
+								CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"])
+							};
+						}
+
+						reader.Close();
+						con.Close();
+					}
+				}
+			}
+			catch(Exception ex){
+				throw new HttpException("You don't have access. Please login to continue", ex);
+			}
+
+			return vm;
+		}
+
+		public ThreadViewModel GetDataRecord(int threadID)
+		{
+			ThreadViewModel vm = null;
+			using (SqlConnection con = new SqlConnection(ConnectionString))
+			{
+				using (SqlCommand cmd = new SqlCommand("GetThreadDetails", con))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					cmd.Parameters.Add("@ThreadID", SqlDbType.Int).Value = threadID;
+
+					con.Open();
+					SqlDataReader reader = cmd.ExecuteReader();
+					while (reader.Read())
+					{
+						vm = new ThreadViewModel
+						{
+							ThreadID = (int)reader["ThreadID"],
+							TopicID = (int)reader["TopicID"],
+							UserID = (int)reader["UserID"],
+							Name = reader["Name"].ToString(),
+							Description = reader["Description"].ToString(),
+							CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"])
+						};
+					}
+
+					reader.Close();
+					con.Close();
+				}
+			}
+
+			return vm;
 		}
 
 		public List<ThreadViewModel> GetDataCollection(int topicID)

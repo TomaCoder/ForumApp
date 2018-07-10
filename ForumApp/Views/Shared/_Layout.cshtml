@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using ForumApp.Helpers;
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8" />
@@ -8,6 +9,7 @@
 	@Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+	
 	<div class="nav-side-menu">
 		<div class="brand">Forum App</div>
 		<i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
@@ -16,12 +18,12 @@
 
 			<ul id="menu-content" class="menu-content collapse out">
 				<li>
-					<a href="#">
-						<i class="fa fa-dashboard fa-lg"></i> Dashboard
+					<a class="block" href="@Url.Action("Forum", "Home")">
+						<i class="fa fa-dashboard fa-lg"></i> Topics
 					</a>
 				</li>
 				<li>
-					<a href="#">
+					<a class="block" href="#">
 						<i class="fa fa-user fa-lg"></i> Profile
 					</a>
 				</li>
@@ -29,6 +31,27 @@
 		</div>
 	</div>
 	<div class="container body-content">
+		@if (AppManager.GetCurrentUserID() > 0)
+		{
+			using (Html.BeginForm("LogOff", "Account", FormMethod.Post))
+			{
+				@Html.AntiForgeryToken()
+
+				<ul class="login_controls nav navbar-nav navbar-right">
+					<li>
+						<a>You are logged-in as @AppManager.GetCurrentUserName()</a>
+					</li>
+					<li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+				</ul>
+			}
+		}
+		else
+		{
+			<ul class="login_controls nav navbar-nav navbar-right">
+				<li>@Html.ActionLink("Register", "Register", "Account")</li>
+				<li>@Html.ActionLink("Log in", "Login", "Account")</li>
+			</ul>
+		}
 		@RenderBody()
 		<hr />
 		<footer>

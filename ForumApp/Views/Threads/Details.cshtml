@@ -1,4 +1,5 @@
-﻿@using ForumApp.Models;
+﻿@using ForumApp.Helpers
+@using ForumApp.Models;
 
 @model List<PostViewModel>
 
@@ -6,10 +7,12 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 
 	//ViewBag.Title = "Home Page";
+	var thread = ViewBag.threadDetails;
 }
 <div class="container">
 	<div class="page-header text-center">
-		<h1 id="timeline">Posts</h1>
+		<h1 id="timeline">Posts of @thread.Name thread</h1>
+		<h5>@thread.Description</h5>
 	</div>
 	<div class="row">
 		<section class="content">
@@ -21,33 +24,43 @@
 								<tbody>
 									@foreach (var item in Model)
 									{
-										<tr data-status="pagado">
+										<tr>
 											<td>
 												<div class="media">
 													<div class="media-body">
-														<span class="media-meta pull-right"> @item.CreatedDate </span>
-														<p>
+														<p>Re: @thread.Name</p>
+														<p class="post_content">
 															@item.Text <br />
 														</p>
-														<p>
-															Poted By: @item.NickName <br />
-															Posted at: @item.CreatedDate <br />
-															User total post count: @item.NumPosts <br />
-															Registered at: @item.UserCreatedOn <br />
-															Location: @item.City, @item.Country<br />
+														<p class="user_details">
+															<span>Poted By:</span> @item.NickName<br />
+															<span>Total posts: </span> @item.NumPosts<br />
+															<span>Registered:</span>  @item.UserCreated<br />
+															<span>Country:</span> @item.Country<br />
+															<span>City:</span> @item.City<br />
+														</p>
+														@if (AppManager.GetCurrentUserID() == item.UserID)
+														{
+															<p class="commands">
+																<span class="glyphicon glyphicon-edit"></span>
+																<span class="glyphicon glyphicon-remove"></span>
+															</p>
+														}
+														<p class="commands date">
+															<span>Posted on: @item.PostCreated</span>
 														</p>
 													</div>
 												</div>
 											</td>
 										</tr>
 									}
-									</tbody>
+								</tbody>
 							</table>
 						</div>
 					</div>
 				</div>
 			</div>
 		</section>
-
+		<button type="button" title="Add Post" id="btnAddPost" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-plus"></i></button>
 	</div>
 </div>

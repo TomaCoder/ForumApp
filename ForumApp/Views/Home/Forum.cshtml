@@ -19,7 +19,7 @@
 						<div class="thumbnail clearfix">
 							<input type="hidden" value="@item.TopicID" />
 							<div class="caption" class="pull-left">
-								<a href="@Url.Action("Details", "Topics", new { ID = item.TopicID })" id="btnTopic" class="btn btn-primary icon  pull-right">Select</a>
+								<a href="@Url.Action("Details", "Topics", new { ID = item.TopicID })" id="btnTopic" class="btn btn-primary icon  pull-right">Threads</a>
 								<h4>
 									<a href="#">@item.Name</a>
 								</h4>
@@ -28,9 +28,13 @@
 								</h5>
 								<small>
 									Last post: @(string.IsNullOrEmpty(item.ThreadName) ? "" : "Re: " + item.ThreadName)<br />
-									Posted at: @item.PostCreatedOn <br />
-									Total replies: @item.NumPosts
+									Posted on: @item.PostCreatedOn <br />
+									<a>Total replies: @item.NumPosts</a>
 								</small>
+								<p class="commands topic_commands">
+									<span class="glyphicon glyphicon-edit"></span>
+									<span class="glyphicon glyphicon-remove"></span>
+								</p>
 							</div>
 						</div>
 					</li>
@@ -39,13 +43,3 @@
 		</div>
 	</div>
 </div>
-<script>
-
-	document.body.onload = function () {
-		$('.thumbnail.clearfix').click(function (e) {
-			var topicID = $(this).find('input[type=hidden]').val();
-			location.href = '@Url.Action("Details", "Topics")' + '/' + topicID;
-			})
-	}
-
-</script>

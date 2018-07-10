@@ -39,9 +39,11 @@ namespace ForumApp.Controllers
 							City = reader["City"].ToString(),
 							Country = reader["Country"].ToString(),
 							CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"]),
-							UserCreatedOn = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["UserCreatedOn"])
+							UserCreatedOn = (reader.IsDBNull(reader.GetOrdinal("UserCreatedOn")) ? null : (DateTime?)reader["UserCreatedOn"])
 						};
-
+						//var a= vm.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
+						vm.PostCreated = String.Format("{0:MM/dd/yyyy, HH:mm}", vm.CreatedDate);
+						vm.UserCreated = String.Format("{0:MM/dd/yyyy, HH:mm}", vm.UserCreatedOn);
 						dmCollection.Add(vm);
 					}
 

@@ -15,7 +15,7 @@ namespace ForumApp.Controllers
 		public ActionResult Forum()
 		{
 			TopicsController controller = new TopicsController();
-			
+
 			return View("Forum", controller.GetDataCollection());
 		}
 	}

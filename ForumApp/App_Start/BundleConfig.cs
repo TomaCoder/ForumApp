@@ -18,8 +18,10 @@ namespace ForumApp
 			bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
 					  "~/Scripts/bootstrap.js"));
 
-			bundles.Add(new ScriptBundle("~/bundles/page").Include(
-								  "~/Scripts/Page/*.js"));
+			//bundles.Add(new ScriptBundle("~/bundles/page").IncludeDirectory(
+			//					  "~/Scripts/Page/*.js"));
+			bundles.Add(new ScriptBundle("~/bundles/page").IncludeDirectory(
+							"~/Scripts/Page/", "*.js"));
 
 			bundles.Add(new StyleBundle("~/Content/css").Include(
 					  "~/Content/bootstrap.css",

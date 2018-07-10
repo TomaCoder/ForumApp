@@ -67,7 +67,7 @@ namespace ForumApp.Controllers
 				{
 					System.Web.HttpContext.Current.Session.Add("UserID", user.UserID);
 					System.Web.HttpContext.Current.Session.Add("UserName", user.NickName);
-					return RedirectToAction("Index", "Home");
+					return RedirectToAction("Forum", "Home");
 				}
 			}
 
