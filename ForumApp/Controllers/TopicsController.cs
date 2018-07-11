@@ -2,9 +2,11 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 
 using ForumApp.Models;
+using ForumApp.Helpers;
 
 namespace ForumApp.Controllers
 {
@@ -21,34 +23,44 @@ namespace ForumApp.Controllers
 			return View("Details", controller.GetDataCollection(id));
 		}
 
-		//public TopicViewModel AddTopic(TopicViewModel vm){
-		//	using (SqlConnection con = new SqlConnection(ConnectionString))
-		//	{
-		//		using (SqlCommand cmd = new SqlCommand("InsertTopic", con))
-		//		{
-		//			cmd.CommandType = CommandType.StoredProcedure;
-		//			cmd.Parameters.Add("@TopicID", SqlDbType.Int).Value = topicID;
+		[FormatException]
+		public JsonResult AddTopic(TopicViewModel vm)
+		{
+			try
+			{
+				using (SqlConnection con = new SqlConnection(ConnectionString))
+				{
+					using (SqlCommand cmd = new SqlCommand("InsertTopic", con))
+					{
+						cmd.CommandType = CommandType.StoredProcedure;
+						cmd.Parameters.Add("@UserID", SqlDbType.Int).Value = (int)System.Web.HttpContext.Current.Session["UserID"];
+						cmd.Parameters.Add("@Name", SqlDbType.NVarChar).Value = vm.Name;
 
-		//			con.Open();
-		//			SqlDataReader reader = cmd.ExecuteReader();
-		//			while (reader.Read())
-		//			{
-		//				vm = new TopicViewModel
-		//				{
-		//					TopicID = (int)reader["TopicID"],
-		//					UserID = (int)reader["UserID"],
-		//					Name = reader["Name"].ToString(),
-		//					CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"])
-		//				};
-		//			}
+						con.Open();
+						SqlDataReader reader = cmd.ExecuteReader();
+						while (reader.Read())
+						{
+							vm = new TopicViewModel
+							{
+								TopicID = (int)reader["TopicID"],
+								UserID = (int)reader["UserID"],
+								Name = reader["Name"].ToString(),
+								CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"])
+							};
+						}
 
-		//			reader.Close();
-		//			con.Close();
-		//		}
-		//	}
+						reader.Close();
+						con.Close();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new HttpException("You don't have access. Please login to continue", ex);
+			}
 
-		//	return vm;
-		//}
+			return this.Json(vm);
+		}
 
 		public TopicViewModel GetDataRecord(int topicID)
 		{

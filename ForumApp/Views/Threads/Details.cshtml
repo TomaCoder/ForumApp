@@ -10,6 +10,7 @@
 	var thread = ViewBag.threadDetails;
 }
 <div class="container">
+	<input type="hidden" id="threadID" value="@thread.ThreadID" />
 	<div class="page-header text-center">
 		<h1 id="timeline">Posts of @thread.Name thread</h1>
 		<h5>@thread.Description</h5>

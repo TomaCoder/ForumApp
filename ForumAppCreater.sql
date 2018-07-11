@@ -241,5 +241,38 @@ GO
 	VALUES (@NickName, @Password, @Email, @City, @Country, GETDATE())
 
 GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ CREATE PROCEDURE 
+	[dbo].[InsertPost] 
+        @ThreadID int,
+		@UserID int,
+		@Text nvarchar(max)
+	AS           
+	INSERT INTO Posts (ThreadID, UserID, Text, CreatedDate)
+	OUTPUT INSERTED.*
+	VALUES (@ThreadID, @UserID, @Text, GETDATE())
+
+GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ CREATE PROCEDURE 
+	[dbo].[InsertTopic] 
+		@UserID int,
+		@Name nvarchar(256)
+	AS           
+	INSERT INTO Topics (UserID, Name, CreatedDate)
+	OUTPUT INSERTED.*
+	VALUES (@UserID, @Name, GETDATE())
+GO
+
 /****** Object:  Table [dbo].[Posts]    Script Date: 07/11/2018 00:22:59 ******/
 

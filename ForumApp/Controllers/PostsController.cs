@@ -2,9 +2,11 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Collections.Generic;
+using System.Web;
 using System.Web.Mvc;
 
 using ForumApp.Models;
+using ForumApp.Helpers;
 
 namespace ForumApp.Controllers
 {
@@ -13,6 +15,47 @@ namespace ForumApp.Controllers
 		// GET: Posts
 		private readonly string ConnectionString = System.Configuration.ConfigurationManager.
 			  ConnectionStrings["ConnectionString"].ConnectionString;
+
+		[FormatException]
+		public PostViewModel AddPost(PostViewModel vm)
+		{
+			try
+			{
+				using (SqlConnection con = new SqlConnection(ConnectionString))
+				{
+					using (SqlCommand cmd = new SqlCommand("InsertPost", con))
+					{
+						cmd.CommandType = CommandType.StoredProcedure;
+						cmd.Parameters.Add("@ThreadID", SqlDbType.Int).Value = vm.ThreadID;
+						cmd.Parameters.Add("@UserID", SqlDbType.Int).Value = (int)System.Web.HttpContext.Current.Session["UserID"];
+						cmd.Parameters.Add("@Text", SqlDbType.NVarChar).Value = vm.Text;
+
+						con.Open();
+						SqlDataReader reader = cmd.ExecuteReader();
+						while (reader.Read())
+						{
+							vm = new PostViewModel
+							{
+								PostID = (int)reader["PostID"],
+								ThreadID = (int)reader["ThreadID"],
+								UserID = (int)reader["UserID"],
+								Text = reader["Text"].ToString(),
+								CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"])
+							};
+						}
+
+						reader.Close();
+						con.Close();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new HttpException("You don't have access. Please login to continue", ex);
+			}
+
+			return vm;
+		}
 
 		public List<PostViewModel> GetDataCollection(int threadID)
 		{
