@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>@ViewBag.Title Forum</title>
+	<title>@ViewBag.Title</title>
 	@Styles.Render("~/Content/css")
 	@Scripts.Render("~/bundles/modernizr")
 </head>
@@ -21,18 +21,13 @@
 						<i class="fa fa-dashboard fa-lg"></i> Topics
 					</a>
 				</li>
-				<li>
-					<a class="block" href="#">
-						<i class="fa fa-user fa-lg"></i> Profile
-					</a>
-				</li>
 			</ul>
 		</div>
 	</div>
 	<div class="container body-content">
 		@if (AppManager.GetCurrentUserID() > 0)
 		{
-			using (Html.BeginForm("LogOff", "Account", FormMethod.Post))
+			using (Html.BeginForm("LogOut", "Account", FormMethod.Post, new { @class = "logoutForm" }))
 			{
 				@Html.AntiForgeryToken()
 
@@ -40,7 +35,7 @@
 					<li>
 						<a>You are logged-in as @AppManager.GetCurrentUserName()</a>
 					</li>
-					<li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+					<li><a href="javascript:$(document.getElementsByClassName('logoutForm')).submit()">Log Out</a></li>
 				</ul>
 			}
 		}

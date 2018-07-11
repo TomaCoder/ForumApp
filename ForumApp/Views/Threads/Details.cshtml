@@ -6,7 +6,7 @@
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 
-	//ViewBag.Title = "Home Page";
+	ViewBag.Title = "Posts";
 	var thread = ViewBag.threadDetails;
 }
 <div class="container">
@@ -64,3 +64,13 @@
 		<button type="button" title="Add Post" id="btnAddPost" class="btn btn-default btn-circle btn-xl"><i class="glyphicon glyphicon-plus"></i></button>
 	</div>
 </div>
+<script>
+	window.onload = function () {
+		$('#menu-content')
+			.append($('<li>\
+					<a class="block" href="@Url.Action("Details", "Topics", new { ID = thread.TopicID })">\
+						<i class="fa fa-dashboard fa-lg"></i>Threads\
+					</a>\
+				</li>'))
+	}
+</script>

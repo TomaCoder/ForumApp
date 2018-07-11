@@ -75,6 +75,13 @@ namespace ForumApp.Controllers
 		}
 
 		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> LogOut(){
+			Session.Abandon();
+			return RedirectToAction("Forum", "Home");
+		}
+
+		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
 		public async Task<ActionResult> Register(RegisterViewModel model)

@@ -574,3 +574,14 @@ body {
 .login_controls{
 	margin-right:20px;
 }
+
+button {
+	user-select: none;
+}
+
+footer {
+	display: block;
+	position: fixed;
+	bottom: 0;
+	right: 40px;
+}
