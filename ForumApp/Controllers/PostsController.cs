@@ -17,7 +17,7 @@ namespace ForumApp.Controllers
 			  ConnectionStrings["ConnectionString"].ConnectionString;
 
 		[FormatException]
-		public PostViewModel AddPost(PostViewModel vm)
+		public JsonResult AddPost(PostViewModel vm)
 		{
 			try
 			{
@@ -54,7 +54,7 @@ namespace ForumApp.Controllers
 				throw new HttpException("You don't have access. Please login to continue", ex);
 			}
 
-			return vm;
+			return this.Json(vm);
 		}
 
 		public List<PostViewModel> GetDataCollection(int threadID)

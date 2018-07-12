@@ -20,26 +20,40 @@
 						<div class="thumbnail clearfix">
 							<input type="hidden" value="@item.TopicID" />
 							<div class="caption" class="pull-left">
-								<a href="@Url.Action("Details", "Topics", new { ID = item.TopicID })" id="btnTopic" class="btn btn-primary icon  pull-right">Threads</a>
-								<h4>
-									<a href="#">@item.Name</a>
-								</h4>
-								<h5>
-									<a href="#">@item.NickName</a>
-								</h5>
-								<small>
-									Last post: @(string.IsNullOrEmpty(item.ThreadName) ? "" : "Re: " + item.ThreadName)<br />
-									Posted on: @item.PostCreatedOn <br />
+								<div>
+									<a href="@Url.Action("Details", "Topics", new { ID = item.TopicID })" id="btnTopic" class="btn btn-primary icon  pull-right">Threads</a>
+									<h4>
+										<a>@item.Name</a>
+									</h4>
+								</div>
+								<div class="text_block post_count">
+									@if (item.NumPosts == 0)
+									{
+										<h5>
+											No posts Yet
+										</h5>
+									}
+									else
+									{
+										<h5>
+											<a>@item.NickName</a>
+										</h5>
+										<small>Last post: @(string.IsNullOrEmpty(item.ThreadName) ? "" : "Re: " + item.ThreadName)</small>
+										<br />
+									}
+								</div>
+								<div class="text_block">
 									<a>Total replies: @item.NumPosts</a>
-								</small>
-								<p class="commands topic_commands">
-									<span class="glyphicon glyphicon-edit"></span>
-									<span class="glyphicon glyphicon-remove"></span>
-								</p>
+									<p class="commands topic_commands">
+										<span class="glyphicon glyphicon-edit"></span>
+										<span class="glyphicon glyphicon-remove"></span>
+									</p>
+								</div>
 							</div>
 						</div>
 					</li>
 				}
+
 			</ul>
 		</div>
 	</div>

@@ -23,7 +23,7 @@ namespace ForumApp.Controllers
 		}
 
 		[FormatException]
-		public ThreadViewModel AddThread(ThreadViewModel vm)
+		public JsonResult AddThread(ThreadViewModel vm)
 		{
 			try
 			{
@@ -60,7 +60,7 @@ namespace ForumApp.Controllers
 				throw new HttpException("You don't have access. Please login to continue", ex);
 			}
 
-			return vm;
+			return this.Json(vm);
 		}
 
 		public ThreadViewModel GetDataRecord(int threadID)

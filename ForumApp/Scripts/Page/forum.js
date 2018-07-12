@@ -39,30 +39,35 @@
 				data: {
 					name: name
 				},
-				success: function (data) {
-					var addedItem = $('<li class="span5 clearfix">\
-						<div class= "thumbnail clearfix" >\
-						<input type="hidden" value="' + data.TopicID + '" />\
-						<div class="caption" class="pull-left">\
-							<a href="/Topics/Details/' + data.TopicID + '" id="btnTopic" class="btn btn-primary icon pull-right">Threads</a>\
-						<h4>\
-							<a href="#">' + data.Name + '</a>\
-						</h4>\
-						<h5>\
-							<a href="#"></a>\
-						</h5>\
-						<small>\
-							Last post:<br />\
-							Posted on:<br />\
-							<a>Total replies:</a>\
-						</small>\
-						<p class="commands topic_commands">\
-							<span class="glyphicon glyphicon-edit"></span>\
-							<span class="glyphicon glyphicon-remove"></span>\
-						</p>\
-							</div >\
-						</div >\
-					</li >');
+				success: function (item) {
+					var postCont = !item.NumPosts ? '<h5>No posts Yet</h5>' :
+								'<h5><a>' + item.NickName + '</a></h5>\
+								<small>Last post:' + (item.ThreadName ? "" : "Re: " + item.ThreadName) + '</small>\
+								<br />';
+
+					var addedItem =
+						$('<li class= "span5 clearfix" >\
+								<div class= "thumbnail clearfix" >\
+									<input type="hidden" value="' + item.TopicID + '" />\
+									<div class="caption" class="pull-left">\
+											<div>\
+												<a href="Topics/Details/' + item.TopicID + '" id="btnTopic" class="btn btn-primary icon  pull-right">Threads</a>\
+											<h4>\
+												<a>' + item.Name + '</a>\
+											</h4>\
+										</div>\
+										<div class="text_block post_count">' + postCont + '</div>\
+										<div class="text_block">\
+											<a>Total replies: ' + (item.NumPosts || 0) + '</a>\
+											<p class="commands topic_commands">\
+												<span class="glyphicon glyphicon-edit"></span>\
+												<span class="glyphicon glyphicon-remove"></span>\
+											</p>\
+										</div>\
+									</div>\
+								</div>\
+							</li >');
+
 					$('#topic_cont').prepend(addedItem);
 					$('#modal_win').remove();
 				},
@@ -126,8 +131,36 @@ $('#btnAddThread').on('click', function (e) {
 					Description: desc,
 					TopicID: topicID
 				},
-				success: function () {
+				success: function (item) {
+					var postCont = !item.NumPosts ? '<span>No posts Yet</span>' :
+						'<span>Last posted by:</span>' + item.NickName + '<br />\
+						<span>Last posted on: </span>' + item.PostCreatedOn + '\
+								<br />';
 
+					var addedItem =
+						$('<li class="timeline-inverted">\
+							<div class= "timeline-badge primary" > <a><i class="glyphicon glyphicon-record invert" rel="tooltip" title="11 hours ago via Twitter" id=""></i></a></div>\
+									<div class="timeline-panel">\
+										<div class="timeline-heading">\
+										</div>\
+										<div class="timeline-body">\
+											<p>\
+												<a href="/../Threads/Details/' + item.ThreadID + '">\
+													' + item.Name + '\
+											</a> <br />\
+											<p>' + postCont + '</p>\
+										</div>\
+										<div class="timeline-footer">\
+											<a>Total replies: ' + (item.NumPosts || 0) + '</a>\
+											<a class="pull-right" href="/../Threads/Details/' + item.ThreadID + '">\
+												Posts\
+										<span class="glyphicon glyphicon-circle-arrow-right"></span>\
+									</a>\
+								</div>\
+							</div>\
+						</li>');
+
+					$('.thread_cont').prepend(addedItem);
 					$('#modal_win').remove();
 				},
 				error: function (xhr) {
@@ -184,7 +217,36 @@ $('#btnAddPost').on('click', function (e) {
 					Text: desc,
 					ThreadID: threadID
 				},
-				success: function () {
+				success: function (item) {
+					var addedItem =
+						$('<tr>\
+							<td>\
+							<div class="media">\
+								<div class="media-body">\
+									<p>Re: ' + 'thread.Name' + '</p>\
+									<p class="post_content">\
+										' + item.Text + '<br/>\
+									</p>\
+									<p class="user_details">\
+										<span>Poted By:</span>' + item.NickName + '<br/>\
+										<span>Total posts: </span>' + item.NumPosts + '<br/>\
+										<span>Registered:</span>' + item.UserCreated + '<br/>\
+										<span>Country:</span>' + item.Country + '<br/>\
+										<span>City:</span>' + item.City + '<br/>\
+									</p>\
+										<p class="commands">\
+											<span class="glyphicon glyphicon-edit"></span>\
+											<span class="glyphicon glyphicon-remove"></span>\
+										</p>\
+									<p class="commands date">\
+										<span>Posted on: ' + item.CreatedDate + '</span>\
+									</p>\
+								</div>\
+							</div>\
+						</td>\
+					</tr>');
+
+					$('.post_cont').prepend(addedItem);
 					$('#modal_win').remove();
 				},
 				error: function (xhr) {

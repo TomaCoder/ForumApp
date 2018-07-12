@@ -29,6 +29,28 @@ textarea {
 .span5.clearfix {
 	width: 40%;
 	display: inline-block;
+	list-style: none;
+	flex: 1;
+	padding: 5px;
+	height: 100%;
+}
+
+.thumbnail .caption {
+	padding: 9px;
+	color: #333;
+	float: left;
+	width: 100%;
+}
+.thumbnail.clearfix {
+	height: 155px;
+}
+.text_block.post_count{
+	height: 60px;
+
+}
+.text_block {
+	float: left;
+	width: 100%;
 }
 
 /*navbar*/
