@@ -4,7 +4,6 @@ namespace ForumApp.Helpers
 {
 	public static class AppManager
 	{
-		//public bool? IsAdmin{ get; set; }
 		public static int? GetCurrentUserID()
 		{
 			if(HttpContext.Current.Session.Count == 0){
@@ -14,7 +13,7 @@ namespace ForumApp.Helpers
 				return 0;
 			}
 
-			return (int)System.Web.HttpContext.Current.Session["UserID"];
+			return (int)HttpContext.Current.Session["UserID"];
 		}
 		public static string GetCurrentUserRole()
 		{

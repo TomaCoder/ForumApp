@@ -124,7 +124,8 @@ namespace ForumApp.Controllers
 				if(user != null){
 					System.Web.HttpContext.Current.Session.Add("UserID", user.UserID);
 					System.Web.HttpContext.Current.Session.Add("UserName", user.NickName);
-					return RedirectToAction("Index", "Home");
+					System.Web.HttpContext.Current.Session.Add("Role", user.Role);
+					return RedirectToAction("Forum", "Home");
 				}
 			}
 

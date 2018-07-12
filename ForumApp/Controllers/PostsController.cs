@@ -12,7 +12,6 @@ namespace ForumApp.Controllers
 {
 	public class PostsController : Controller
 	{
-		// GET: Posts
 		private readonly string ConnectionString = System.Configuration.ConfigurationManager.
 			  ConnectionStrings["ConnectionString"].ConnectionString;
 
@@ -66,7 +65,7 @@ namespace ForumApp.Controllers
 				{
 					cmd.CommandType = CommandType.StoredProcedure;
 					cmd.Parameters.Add("@ThreadID", SqlDbType.Int).Value = threadID;
-					if(!string.IsNullOrEmpty(sortorder))
+					if (!string.IsNullOrEmpty(sortorder))
 					{
 						cmd.Parameters.Add("@SortOrder", SqlDbType.NVarChar).Value = sortorder;
 					}
@@ -87,7 +86,7 @@ namespace ForumApp.Controllers
 							CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"]),
 							UserCreatedOn = (reader.IsDBNull(reader.GetOrdinal("UserCreatedOn")) ? null : (DateTime?)reader["UserCreatedOn"])
 						};
-						//var a= vm.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss.fff");
+
 						vm.PostCreated = String.Format("{0:MM/dd/yyyy, HH:mm}", vm.CreatedDate);
 						vm.UserCreated = String.Format("{0:MM/dd/yyyy, HH:mm}", vm.UserCreatedOn);
 						dmCollection.Add(vm);
@@ -101,7 +100,8 @@ namespace ForumApp.Controllers
 			return dmCollection;
 		}
 
-		public JsonResult GetCollectionJson(int threadID, string sortOrder){
+		public JsonResult GetCollectionJson(int threadID, string sortOrder)
+		{
 			return Json(GetDataCollection(threadID, sortOrder));
 		}
 	}

@@ -5,13 +5,7 @@ namespace ForumApp.Helpers
 {
 	public class AuthorizationAttribute : ActionFilterAttribute
 	{
-		#region Properties
-
-		//public bit LoginType { get; set; }
-
-		#endregion
-
-		#region Overridden Methods
+		#region Overridden Method
 
 		public override void OnActionExecuting(ActionExecutingContext filterContext)
 		{

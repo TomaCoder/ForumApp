@@ -15,7 +15,8 @@ namespace ForumApp.Controllers
 		private readonly string ConnectionString = System.Configuration.ConfigurationManager.
 			ConnectionStrings["ConnectionString"].ConnectionString;
 
-		public ViewResult Details(int id){
+		public ViewResult Details(int id)
+		{
 			PostsController controller = new PostsController();
 
 			ViewBag.threadDetails = GetDataRecord(id);
@@ -56,7 +57,8 @@ namespace ForumApp.Controllers
 					}
 				}
 			}
-			catch(Exception ex){
+			catch (Exception ex)
+			{
 				throw new HttpException("You don't have access. Please login to continue", ex);
 			}
 
@@ -96,69 +98,86 @@ namespace ForumApp.Controllers
 			return vm;
 		}
 
+		[FormatException]
 		public JsonResult StartThread(int threadID)
 		{
 			ThreadViewModel vm = null;
-			using (SqlConnection con = new SqlConnection(ConnectionString))
+			try
 			{
-				using (SqlCommand cmd = new SqlCommand("StartThread", con))
+				using (SqlConnection con = new SqlConnection(ConnectionString))
 				{
-					cmd.CommandType = CommandType.StoredProcedure;
-					cmd.Parameters.Add("@ThreadID", SqlDbType.Int).Value = threadID;
-
-					con.Open();
-					SqlDataReader reader = cmd.ExecuteReader();
-					while (reader.Read())
+					using (SqlCommand cmd = new SqlCommand("StartThread", con))
 					{
-						vm = new ThreadViewModel
+						cmd.CommandType = CommandType.StoredProcedure;
+						cmd.Parameters.Add("@ThreadID", SqlDbType.Int).Value = threadID;
+
+						con.Open();
+						SqlDataReader reader = cmd.ExecuteReader();
+						while (reader.Read())
 						{
-							ThreadID = (int)reader["ThreadID"],
-							TopicID = (int)reader["TopicID"],
-							UserID = (int)reader["UserID"],
-							Inactive = (reader.IsDBNull(reader.GetOrdinal("Inactive")) ? null : (bool?)reader["Inactive"]),
-							Name = reader["Name"].ToString(),
-							Description = reader["Description"].ToString(),
-							CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"])
-						};
+							vm = new ThreadViewModel
+							{
+								ThreadID = (int)reader["ThreadID"],
+								TopicID = (int)reader["TopicID"],
+								UserID = (int)reader["UserID"],
+								Inactive = (reader.IsDBNull(reader.GetOrdinal("Inactive")) ? null : (bool?)reader["Inactive"]),
+								Name = reader["Name"].ToString(),
+								Description = reader["Description"].ToString(),
+								CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"])
+							};
+						}
+
+						reader.Close();
+						con.Close();
 					}
 
-					reader.Close();
-					con.Close();
 				}
+			}
+			catch (Exception ex)
+			{
+				throw new HttpException("You don't have access. Admin account is needed.", ex);
 			}
 
 			return Json(vm);
 		}
 
+		[FormatException]
 		public JsonResult CloseThread(int threadID)
 		{
 			ThreadViewModel vm = null;
-			using (SqlConnection con = new SqlConnection(ConnectionString))
+			try
 			{
-				using (SqlCommand cmd = new SqlCommand("CloseThread", con))
+				using (SqlConnection con = new SqlConnection(ConnectionString))
 				{
-					cmd.CommandType = CommandType.StoredProcedure;
-					cmd.Parameters.Add("@ThreadID", SqlDbType.Int).Value = threadID;
-
-					con.Open();
-					SqlDataReader reader = cmd.ExecuteReader();
-					while (reader.Read())
+					using (SqlCommand cmd = new SqlCommand("CloseThread", con))
 					{
-						vm = new ThreadViewModel
-						{
-							ThreadID = (int)reader["ThreadID"],
-							TopicID = (int)reader["TopicID"],
-							UserID = (int)reader["UserID"],
-							Inactive = (reader.IsDBNull(reader.GetOrdinal("Inactive")) ? null : (bool?)reader["Inactive"]),
-							Name = reader["Name"].ToString(),
-							Description = reader["Description"].ToString(),
-							CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"])
-						};
-					}
+						cmd.CommandType = CommandType.StoredProcedure;
+						cmd.Parameters.Add("@ThreadID", SqlDbType.Int).Value = threadID;
 
-					reader.Close();
-					con.Close();
+						con.Open();
+						SqlDataReader reader = cmd.ExecuteReader();
+						while (reader.Read())
+						{
+							vm = new ThreadViewModel
+							{
+								ThreadID = (int)reader["ThreadID"],
+								TopicID = (int)reader["TopicID"],
+								UserID = (int)reader["UserID"],
+								Inactive = (reader.IsDBNull(reader.GetOrdinal("Inactive")) ? null : (bool?)reader["Inactive"]),
+								Name = reader["Name"].ToString(),
+								Description = reader["Description"].ToString(),
+								CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"])
+							};
+						}
+
+						reader.Close();
+						con.Close();
+					}
 				}
+			}
+			catch (Exception ex)
+			{
+				throw new HttpException("You don't have access. Admin account is needed.", ex);
 			}
 
 			return Json(vm);
@@ -187,7 +206,7 @@ namespace ForumApp.Controllers
 							Name = reader["Name"].ToString(),
 							NickName = reader["NickName"].ToString(),
 							Description = reader["Description"].ToString(),
-							Inactive = (reader.IsDBNull(reader.GetOrdinal("Inactive")) ? null: (bool?)reader["Inactive"]),
+							Inactive = (reader.IsDBNull(reader.GetOrdinal("Inactive")) ? null : (bool?)reader["Inactive"]),
 							CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"]),
 							PostCreatedOn = (reader.IsDBNull(reader.GetOrdinal("PostCreatedOn")) ? null : (DateTime?)reader["PostCreatedOn"])
 						};

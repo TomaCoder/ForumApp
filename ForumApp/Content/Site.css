@@ -3,7 +3,6 @@
 	padding-bottom: 20px;
 }
 
-/* Set padding to keep content from hitting the edges */
 .body-content {
 	padding-left: 15px;
 	padding-right: 15px;
@@ -12,14 +11,10 @@
 	margin-left: 200px;
 }
 
-/* Override the default bootstrap behavior where horizontal description lists 
-   will truncate terms that are too long to fit in the left column 
-*/
 .dl-horizontal dt {
 	white-space: normal;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
 input,
 select,
 textarea {
@@ -41,13 +36,15 @@ textarea {
 	float: left;
 	width: 100%;
 }
+
 .thumbnail.clearfix {
 	height: 155px;
 }
-.text_block.post_count{
-	height: 60px;
 
+.text_block.post_count {
+	height: 60px;
 }
+
 .text_block {
 	float: left;
 	width: 100%;
@@ -206,9 +203,6 @@ body {
 	padding: 0px;
 }
 
-
-
-
 .timeline {
 	list-style: none;
 	padding: 20px 0 20px;
@@ -258,8 +252,6 @@ body {
 			width: 95%;
 			float: left;
 			border: 1px solid #d4d4d4;
-			/*border-radius: 2px;*/
-			/*padding: 20px;*/
 			position: relative;
 			-webkit-box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
 			box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
@@ -299,14 +291,7 @@ body {
 			position: absolute;
 			top: 16px;
 			right: -12px;
-			/*background-color: #999999;*/
 			z-index: 100;
-			/*
-  border-top-right-radius: 50%;
-  border-top-left-radius: 50%;
-  border-bottom-right-radius: 50%;
-  border-bottom-left-radius: 50%;
-  */
 		}
 
 		.timeline > li.timeline-inverted > .timeline-panel {
@@ -593,8 +578,8 @@ body {
 	z-index: 10000;
 }
 
-.login_controls{
-	margin-right:20px;
+.login_controls {
+	margin-right: 20px;
 }
 
 button {
@@ -607,25 +592,31 @@ footer {
 	bottom: 0;
 	right: 40px;
 }
+
 .btn-sort {
 	background: #2e353d;
 	margin-bottom: 5px;
 	float: right;
 }
-.panel-default{
+
+.panel-default {
 	border: 0;
 }
+
 .table.table-filter {
 	border: 1px solid #ddd;
 }
+
 .inactive_thread {
 	display: inline-block;
 	float: right;
 	color: #b11313;
 }
+
 .thread_header {
-	padding:20px;
+	padding: 20px;
 }
+
 .glyphicon-off, .glyphicon-play-circle {
 	float: right;
 	cursor: pointer;
