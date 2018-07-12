@@ -56,6 +56,31 @@ namespace ForumApp.Controllers
 			return this.Json(vm);
 		}
 
+		public JsonResult RemovePost(int postID)
+		{
+			try
+			{
+				using (SqlConnection con = new SqlConnection(ConnectionString))
+				{
+					using (SqlCommand cmd = new SqlCommand("RemovePost", con))
+					{
+						cmd.CommandType = CommandType.StoredProcedure;
+						cmd.Parameters.Add("@PostID", SqlDbType.Int).Value = postID;
+
+						con.Open();
+						cmd.ExecuteReader();
+						con.Close();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new HttpException("You don't have access. Please login to continue", ex);
+			}
+
+			return Json(new { PostID = postID});
+		}
+		
 		public List<PostViewModel> GetDataCollection(int threadID, string sortorder = null)
 		{
 			List<PostViewModel> dmCollection = new List<PostViewModel>();

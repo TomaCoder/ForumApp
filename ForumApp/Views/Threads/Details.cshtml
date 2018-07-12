@@ -44,8 +44,8 @@
 														@if (AppManager.GetCurrentUserID() == item.UserID)
 														{
 															<p class="commands">
-																<span class="glyphicon glyphicon-edit"></span>
-																<span class="glyphicon glyphicon-remove"></span>
+																<span id="btnEditPost" data-val="@(item.PostID)" class="glyphicon glyphicon-edit"></span>
+																<span id="btnDeletePost" data-val="@(item.PostID)" class="glyphicon glyphicon-remove"></span>
 															</p>
 														}
 														<p class="commands date">
@@ -68,6 +68,7 @@
 </div>
 <script>
 	var threadName;
+	var currentUserID;
 	window.onload = function () {
 		$('#menu-content')
 			.append($('<li>\
@@ -77,5 +78,6 @@
 				</li>'))
 		
 		threadName ="@(thread.Name)";
+		currentUserID ="@(AppManager.GetCurrentUserID())";
 	}
 </script>

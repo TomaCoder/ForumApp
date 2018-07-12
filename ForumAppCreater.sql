@@ -336,3 +336,17 @@ GO
 	OUTPUT INSERTED.*
 	where ThreadID = @ThreadID
 GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ CREATE PROCEDURE 
+	[dbo].[RemovePost]
+		@PostID int
+	AS           
+	DELETE 
+	FROM posts WHERE 
+	WHERE PostID = @PostID
+GO

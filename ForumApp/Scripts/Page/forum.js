@@ -235,8 +235,8 @@ $('#btnAddPost').on('click', function (e) {
 										<span>City:</span>' + item.City + '<br/>\
 									</p>\
 										<p class="commands">\
-											<span class="glyphicon glyphicon-edit"></span>\
-											<span class="glyphicon glyphicon-remove"></span>\
+											<span id="btnEditPost" data-val="' + item.PostID + '" class="glyphicon glyphicon-edit"></span>\
+											<span id="btnDeletePost" data-val="' + item.PostID + '" class="glyphicon glyphicon-remove"></span>\
 										</p>\
 									<p class="commands date">\
 										<span>Posted on: ' + item.PostCreatedOn + '</span>\
@@ -277,6 +277,12 @@ $('#btnSort').on('click', function (e) {
 
 			var content = '';
 			for (var i in items) {
+				var commands = currentUserID ==
+					items[i].UserID ? '<p class="commands">\
+											<span id="btnEditPost" data-val="' + items[i].PostID + '" class="glyphicon glyphicon-edit"></span>\
+											<span id="btnDeletePost" data-val="' + items[i].PostID + '" class="glyphicon glyphicon-remove"></span>\
+										</p>' : '';
+
 				var addedItem =
 					'<tr>\
 							<td>\
@@ -292,12 +298,7 @@ $('#btnSort').on('click', function (e) {
 										<span>Registered:</span>' + items[i].UserCreated + '<br/>\
 										<span>Country:</span>' + items[i].Country + '<br/>\
 										<span>City:</span>' + items[i].City + '<br/>\
-									</p>\
-										<p class="commands">\
-											<span class="glyphicon glyphicon-edit"></span>\
-											<span class="glyphicon glyphicon-remove"></span>\
-										</p>\
-									<p class="commands date">\
+									</p>' + commands +'<p class="commands date">\
 										<span>Posted on: ' + items[i].PostCreated + '</span>\
 									</p>\
 								</div>\
@@ -358,6 +359,28 @@ $(document.body).on('click', '.btnStartThread', function (e) {
 
 			button
 				.parent().empty();
+		},
+		error: function (xhr) {
+			if (500 === xhr.status) {
+				var message = JSON.parse(arguments[0].responseText).message;
+				alert(message);
+				$('#modal_win').remove();
+			}
+		},
+		dataType: 'json'
+	});
+});
+
+$(document.body).on('click', '#btnDeletePost', function (e) {
+	var button = $(e.currentTarget);
+	$.ajax({
+		type: "POST",
+		url: '/Posts/RemovePost',
+		data: {
+			PostID: button.data('val')
+		},
+		success: function (item) {
+			button.closest('tr').remove();
 		},
 		error: function (xhr) {
 			if (500 === xhr.status) {
