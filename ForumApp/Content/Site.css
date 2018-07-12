@@ -607,3 +607,14 @@ footer {
 	bottom: 0;
 	right: 40px;
 }
+.btn-sort {
+	background: #2e353d;
+	margin-bottom: 5px;
+	float: right;
+}
+.panel-default{
+	border: 0;
+}
+.table.table-filter {
+	border: 1px solid #ddd;
+}

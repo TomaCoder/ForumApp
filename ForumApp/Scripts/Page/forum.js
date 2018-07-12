@@ -260,3 +260,63 @@ $('#btnAddPost').on('click', function (e) {
 			});
 		});
 });
+
+$('#btnSort').on('click', function (e) {
+	var threadID = $('#threadID').val();
+
+	$.ajax({
+		type: "POST",
+		url: '/Posts/GetCollectionJson',
+		data: {
+			ThreadID: threadID,
+			sortorder: $('#btnSort').data('val')
+		},
+		success: function (items) {
+			$('.post_cont').empty();
+			$('#btnSort').data('val', ($('#btnSort').data('val') == 'ASC' ? 'DESC' : 'ASC'));
+
+			var content = '';
+			for (var i in items) {
+				var addedItem =
+					'<tr>\
+							<td>\
+							<div class="media">\
+								<div class="media-body">\
+									<p>Re: ' + threadName + '</p>\
+									<p class="post_content">\
+										' + items[i].Text + '<br/>\
+									</p>\
+									<p class="user_details">\
+										<span>Poted By:</span>' + items[i].NickName + '<br/>\
+										<span>Total posts: </span>' + items[i].NumPosts + '<br/>\
+										<span>Registered:</span>' + items[i].UserCreated + '<br/>\
+										<span>Country:</span>' + items[i].Country + '<br/>\
+										<span>City:</span>' + items[i].City + '<br/>\
+									</p>\
+										<p class="commands">\
+											<span class="glyphicon glyphicon-edit"></span>\
+											<span class="glyphicon glyphicon-remove"></span>\
+										</p>\
+									<p class="commands date">\
+										<span>Posted on: ' + items[i].PostCreated + '</span>\
+									</p>\
+								</div>\
+							</div>\
+						</td>\
+					</tr>';
+				content += addedItem;
+			}
+
+			$('.post_cont').append(content);
+			$('#modal_win').remove();
+		},
+		error: function (xhr) {
+			if (500 === xhr.status) {
+				var message = JSON.parse(arguments[0].responseText).message;
+				alert(message);
+				$('#modal_win').remove();
+			}
+		},
+		dataType: 'json'
+	});
+});

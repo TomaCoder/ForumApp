@@ -70,34 +70,34 @@ GO
 USE [Test]
 GO
 /****** Object:  StoredProcedure [dbo].[GetPosts]    Script Date: 07/11/2018 00:22:59 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-CREATE PROCEDURE 
-	[dbo].[GetPosts]
-	@ThreadID INT
-	AS
-	SELECT Posts.PostID,
-	Posts.UserID,
-	Posts.ThreadID,
-	Posts.Text,
-	Posts.CreatedDate,
-	Users.NickName,
-	Users.City,
-	Users.Country,
-	Users.CreatedDate as UserCreatedOn,
-	B.NumPosts
-	FROM Posts
-	left join Users on Posts.UserID = Users.UserID
-	CROSS APPLY (
-		SELECT Count(*) as NumPosts
-		FROM Posts 
-	WHERE Users.UserID = Posts.UserID) AS B
-	WHERE ThreadID = @ThreadID
+--SET ANSI_NULLS ON
+--GO
+--SET QUOTED_IDENTIFIER ON
+--GO
+--CREATE PROCEDURE 
+--	[dbo].[GetPosts]
+--	@ThreadID INT
+--	AS
+--	SELECT Posts.PostID,
+--	Posts.UserID,
+--	Posts.ThreadID,
+--	Posts.Text,
+--	Posts.CreatedDate,
+--	Users.NickName,
+--	Users.City,
+--	Users.Country,
+--	Users.CreatedDate as UserCreatedOn,
+--	B.NumPosts
+--	FROM Posts
+--	left join Users on Posts.UserID = Users.UserID
+--	CROSS APPLY (
+--		SELECT Count(*) as NumPosts
+--		FROM Posts 
+--	WHERE Users.UserID = Posts.UserID) AS B
+--	WHERE ThreadID = @ThreadID
 
 
-GO
+--GO
 /****** Object:  StoredProcedure [dbo].[GetThreadDetails]    Script Date: 07/11/2018 00:22:59 ******/
 SET ANSI_NULLS ON
 GO
@@ -276,3 +276,33 @@ GO
 
 /****** Object:  Table [dbo].[Posts]    Script Date: 07/11/2018 00:22:59 ******/
 
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE PROCEDURE 
+	[dbo].[GetPosts]
+	@ThreadID INT,
+	@SortOrder nvarchar(10) = NULL  
+	AS
+	SELECT Posts.PostID,
+	Posts.UserID,
+	Posts.ThreadID,
+	Posts.Text,
+	Posts.CreatedDate,
+	Users.NickName,
+	Users.City,
+	Users.Country,
+	Users.CreatedDate as UserCreatedOn,
+	B.NumPosts
+	FROM Posts
+	left join Users on Posts.UserID = Users.UserID
+	CROSS APPLY (
+		SELECT Count(*) as NumPosts
+		FROM Posts 
+	WHERE Users.UserID = Posts.UserID) AS B
+	WHERE ThreadID = @ThreadID
+	ORDER by CASE WHEN @SortOrder = 'ASC' THEN Posts.CreatedDate END,
+         CASE WHEN @SortOrder = 'DESC' OR @SortOrder is NULL THEN Posts.CreatedDate END DESC
+
+GO

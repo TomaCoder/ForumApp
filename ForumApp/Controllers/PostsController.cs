@@ -57,7 +57,7 @@ namespace ForumApp.Controllers
 			return this.Json(vm);
 		}
 
-		public List<PostViewModel> GetDataCollection(int threadID)
+		public List<PostViewModel> GetDataCollection(int threadID, string sortorder = null)
 		{
 			List<PostViewModel> dmCollection = new List<PostViewModel>();
 			using (SqlConnection con = new SqlConnection(ConnectionString))
@@ -66,7 +66,10 @@ namespace ForumApp.Controllers
 				{
 					cmd.CommandType = CommandType.StoredProcedure;
 					cmd.Parameters.Add("@ThreadID", SqlDbType.Int).Value = threadID;
-
+					if(!string.IsNullOrEmpty(sortorder))
+					{
+						cmd.Parameters.Add("@SortOrder", SqlDbType.NVarChar).Value = sortorder;
+					}
 					con.Open();
 					SqlDataReader reader = cmd.ExecuteReader();
 					while (reader.Read())
@@ -96,6 +99,10 @@ namespace ForumApp.Controllers
 			}
 
 			return dmCollection;
+		}
+
+		public JsonResult GetCollectionJson(int threadID, string sortOrder){
+			return Json(GetDataCollection(threadID, sortOrder));
 		}
 	}
 }
