@@ -321,7 +321,7 @@ $('#btnSort').on('click', function (e) {
 	});
 });
 
-$('#btnStopThread').on('click', function (e) {
+$(document.body).on('click', '.btnStopThread', function (e) {
 	var button = $(e.currentTarget);
 	$.ajax({
 		type: "POST",
@@ -330,7 +330,7 @@ $('#btnStopThread').on('click', function (e) {
 			ThreadID: $(e.currentTarget).data('val')
 		},
 		success: function (item) {
-			button.parent().append('<h5 class="inactive_thread">CLOSED</h5>');
+			button.parent().append('<h5 class="inactive_thread">CLOSED<span title="Start Thread" data-val="' + item.ThreadID + '" class="btnStartThread glyphicon glyphicon-play-circle"></span></h5>');
 			button.remove();
 		},
 		error: function (xhr) {
@@ -342,4 +342,30 @@ $('#btnStopThread').on('click', function (e) {
 		},
 		dataType: 'json'
 	});
-})
+});
+
+$(document.body).on('click', '.btnStartThread', function (e) {
+	var button = $(e.currentTarget);
+	$.ajax({
+		type: "POST",
+		url: '/Threads/StartThread',
+		data: {
+			ThreadID: $(e.currentTarget).data('val')
+		},
+		success: function (item) {
+			button.closest('.thread_header')
+				.append($('<span title="Stop Thread" data-val="' + item.ThreadID + '" class="btnStopThread glyphicon glyphicon-off"></span>'));
+
+			button
+				.parent().empty();
+		},
+		error: function (xhr) {
+			if (500 === xhr.status) {
+				var message = JSON.parse(arguments[0].responseText).message;
+				alert(message);
+				$('#modal_win').remove();
+			}
+		},
+		dataType: 'json'
+	});
+});

@@ -626,7 +626,7 @@ footer {
 .thread_header {
 	padding:20px;
 }
-.glyphicon-off{
+.glyphicon-off, .glyphicon-play-circle {
 	float: right;
 	cursor: pointer;
 }

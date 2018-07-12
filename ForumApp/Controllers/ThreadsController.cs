@@ -96,6 +96,40 @@ namespace ForumApp.Controllers
 			return vm;
 		}
 
+		public JsonResult StartThread(int threadID)
+		{
+			ThreadViewModel vm = null;
+			using (SqlConnection con = new SqlConnection(ConnectionString))
+			{
+				using (SqlCommand cmd = new SqlCommand("StartThread", con))
+				{
+					cmd.CommandType = CommandType.StoredProcedure;
+					cmd.Parameters.Add("@ThreadID", SqlDbType.Int).Value = threadID;
+
+					con.Open();
+					SqlDataReader reader = cmd.ExecuteReader();
+					while (reader.Read())
+					{
+						vm = new ThreadViewModel
+						{
+							ThreadID = (int)reader["ThreadID"],
+							TopicID = (int)reader["TopicID"],
+							UserID = (int)reader["UserID"],
+							Inactive = (reader.IsDBNull(reader.GetOrdinal("Inactive")) ? null : (bool?)reader["Inactive"]),
+							Name = reader["Name"].ToString(),
+							Description = reader["Description"].ToString(),
+							CreatedDate = (reader.IsDBNull(reader.GetOrdinal("CreatedDate")) ? null : (DateTime?)reader["CreatedDate"])
+						};
+					}
+
+					reader.Close();
+					con.Close();
+				}
+			}
+
+			return Json(vm);
+		}
+
 		public JsonResult CloseThread(int threadID)
 		{
 			ThreadViewModel vm = null;

@@ -314,12 +314,25 @@ SET QUOTED_IDENTIFIER ON
 GO
  CREATE PROCEDURE 
 	[dbo].[CloseThread]
-        @UserID int,
-		@TopicID int,
-		@Name nvarchar(256),
-		@Description nvarchar(256) = NULL
+		@ThreadID int
 	AS           
-	INSERT INTO Threads (UserID, TopicID, Name, Description, CreatedDate)
+	Update Threads
+	set Inactive = 'True'
 	OUTPUT INSERTED.*
-	VALUES (@UserID, @TopicID, @Name, @Description, GETDATE())
+	where ThreadID = @ThreadID
+GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ CREATE PROCEDURE 
+	[dbo].[StartThread]
+		@ThreadID int
+	AS           
+	Update Threads
+	set Inactive = 'False'
+	OUTPUT INSERTED.*
+	where ThreadID = @ThreadID
 GO

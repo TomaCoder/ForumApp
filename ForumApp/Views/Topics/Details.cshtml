@@ -29,10 +29,15 @@
 							</a>
 							<h5 class="inactive_thread">
 								@(item.Inactive == true ? "CLOSED" : "")
+
+								@if (userRole == "Admin" && item.Inactive == true)
+								{
+									<span title="Start Thread" data-val="@(item.ThreadID)" class="btnStartThread glyphicon glyphicon-play-circle"></span>
+								}
 							</h5>
 							@if (userRole == "Admin" && item.Inactive != true)
 							{
-								<span title="Stop Thread" id="btnStopThread" data-val="@(item.ThreadID)" class="glyphicon glyphicon-off"></span>
+								<span title="Stop Thread" data-val="@(item.ThreadID)" class="btnStopThread glyphicon glyphicon-off"></span>
 							}
 						</div>
 						<p>
