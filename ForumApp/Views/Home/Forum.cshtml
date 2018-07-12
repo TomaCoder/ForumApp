@@ -23,7 +23,7 @@
 								<div>
 									<a href="@Url.Action("Details", "Topics", new { ID = item.TopicID })" id="btnTopic" class="btn btn-primary icon  pull-right">Threads</a>
 									<h4>
-										<a>@item.Name</a>
+										<a href="@Url.Action("Details", "Topics", new { ID = item.TopicID })">@item.Name</a>
 									</h4>
 								</div>
 								<div class="text_block post_count">

@@ -618,3 +618,15 @@ footer {
 .table.table-filter {
 	border: 1px solid #ddd;
 }
+.inactive_thread {
+	display: inline-block;
+	float: right;
+	color: #b11313;
+}
+.thread_header {
+	padding:20px;
+}
+.glyphicon-off{
+	float: right;
+	cursor: pointer;
+}

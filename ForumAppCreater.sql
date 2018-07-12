@@ -306,3 +306,20 @@ CREATE PROCEDURE
          CASE WHEN @SortOrder = 'DESC' OR @SortOrder is NULL THEN Posts.CreatedDate END DESC
 
 GO
+
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ CREATE PROCEDURE 
+	[dbo].[CloseThread]
+        @UserID int,
+		@TopicID int,
+		@Name nvarchar(256),
+		@Description nvarchar(256) = NULL
+	AS           
+	INSERT INTO Threads (UserID, TopicID, Name, Description, CreatedDate)
+	OUTPUT INSERTED.*
+	VALUES (@UserID, @TopicID, @Name, @Description, GETDATE())
+GO

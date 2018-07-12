@@ -223,7 +223,7 @@ $('#btnAddPost').on('click', function (e) {
 							<td>\
 							<div class="media">\
 								<div class="media-body">\
-									<p>Re: ' + 'thread.Name' + '</p>\
+									<p>Re: ' + threadName + '</p>\
 									<p class="post_content">\
 										' + item.Text + '<br/>\
 									</p>\
@@ -239,7 +239,7 @@ $('#btnAddPost').on('click', function (e) {
 											<span class="glyphicon glyphicon-remove"></span>\
 										</p>\
 									<p class="commands date">\
-										<span>Posted on: ' + item.CreatedDate + '</span>\
+										<span>Posted on: ' + item.PostCreatedOn + '</span>\
 									</p>\
 								</div>\
 							</div>\
@@ -320,3 +320,26 @@ $('#btnSort').on('click', function (e) {
 		dataType: 'json'
 	});
 });
+
+$('#btnStopThread').on('click', function (e) {
+	var button = $(e.currentTarget);
+	$.ajax({
+		type: "POST",
+		url: '/Threads/CloseThread',
+		data: {
+			ThreadID: $(e.currentTarget).data('val')
+		},
+		success: function (item) {
+			button.parent().append('<h5 class="inactive_thread">CLOSED</h5>');
+			button.remove();
+		},
+		error: function (xhr) {
+			if (500 === xhr.status) {
+				var message = JSON.parse(arguments[0].responseText).message;
+				alert(message);
+				$('#modal_win').remove();
+			}
+		},
+		dataType: 'json'
+	});
+})

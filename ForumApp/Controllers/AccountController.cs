@@ -54,6 +54,7 @@ namespace ForumApp.Controllers
 								UserID = (int)reader["UserID"],
 								NickName = reader["NickName"].ToString(),
 								City = reader["City"].ToString(),
+								Role = reader["Role"].ToString(),
 								Country = reader["Country"].ToString()
 							};
 						}
@@ -67,6 +68,7 @@ namespace ForumApp.Controllers
 				{
 					System.Web.HttpContext.Current.Session.Add("UserID", user.UserID);
 					System.Web.HttpContext.Current.Session.Add("UserName", user.NickName);
+					System.Web.HttpContext.Current.Session.Add("Role", user.Role);
 					return RedirectToAction("Forum", "Home");
 				}
 			}

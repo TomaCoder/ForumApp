@@ -1,16 +1,16 @@
-﻿@using ForumApp.Models;
+﻿@using ForumApp.Helpers
+@using ForumApp.Models;
 
 @model List<ThreadViewModel>
 
 @{
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Title = "Threads";
-
+	var userRole = AppManager.GetCurrentUserRole();
 	var topic = ViewBag.topicDetails;
-
 }
 <div class="container">
-<input type="hidden" id="topicID" value="@topic.TopicID"/>
+	<input type="hidden" id="topicID" value="@topic.TopicID" />
 	<div class="page-header text-center">
 		<h1 id="timeline">Threads of @topic.Name topic</h1>
 	</div>
@@ -23,10 +23,18 @@
 					<div class="timeline-heading">
 					</div>
 					<div class="timeline-body">
-						<p>
+						<div class="thread_header">
 							<a href="@Url.Action("Details", "Threads", new { ID = item.ThreadID })">
-								@item.Name
-							</a> <br />
+								@(item.Name)
+							</a>
+							<h5 class="inactive_thread">
+								@(item.Inactive == true ? "CLOSED" : "")
+							</h5>
+							@if (userRole == "Admin" && item.Inactive != true)
+							{
+								<span title="Stop Thread" id="btnStopThread" data-val="@(item.ThreadID)" class="glyphicon glyphicon-off"></span>
+							}
+						</div>
 						<p>
 							@if (item.NumPosts > 0)
 							{
@@ -37,7 +45,6 @@
 							{
 								<span>No posts yet</span>
 							}
-
 						</p>
 					</div>
 
