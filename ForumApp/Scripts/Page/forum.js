@@ -392,3 +392,30 @@ $(document.body).on('click', '#btnDeletePost', function (e) {
 		dataType: 'json'
 	});
 });
+
+$(document.body).on('click', '#btnEditPost', function (e) {
+	var button = $(e.currentTarget);
+	var elem = button.parent().siblings('.post_content');
+	var text = elem.val();
+	elem.hide();
+	elem.after('<textarea class="post_content" id="newText">' + text + '</textarea>');
+
+	//$.ajax({
+	//	type: "POST",
+	//	url: '/Posts/UpdatePost',
+	//	data: {
+	//		PostID: button.data('val')
+	//	},
+	//	success: function (item) {
+	//		button.closest('tr').remove();
+	//	},
+	//	error: function (xhr) {
+	//		if (500 === xhr.status) {
+	//			var message = JSON.parse(arguments[0].responseText).message;
+	//			alert(message);
+	//			$('#modal_win').remove();
+	//		}
+	//	},
+	//	dataType: 'json'
+	//});
+});
