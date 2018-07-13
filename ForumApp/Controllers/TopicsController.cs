@@ -24,6 +24,7 @@ namespace ForumApp.Controllers
 		}
 
 		[FormatException]
+		[Authorization("Admin")]
 		public JsonResult AddTopic(TopicViewModel vm)
 		{
 			try
