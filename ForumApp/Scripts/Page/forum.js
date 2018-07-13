@@ -392,27 +392,54 @@ $(document.body).on('click', '#btnDeletePost', function (e) {
 
 $(document.body).on('click', '#btnEditPost', function (e) {
 	var button = $(e.currentTarget);
+	var postID = button.data('val');
 	var elem = button.parent().siblings('.post_content');
-	var text = elem.val();
+	var text = elem.text();
 	elem.hide();
 	elem.after('<textarea class="post_content" id="newText">' + text + '</textarea>');
-	//save_command
-	//$.ajax({
-	//	type: "POST",
-	//	url: '/Posts/UpdatePost',
-	//	data: {
-	//		PostID: button.data('val')
-	//	},
-	//	success: function (item) {
-	//		button.closest('tr').remove();
-	//	},
-	//	error: function (xhr) {
-	//		if (500 === xhr.status) {
-	//			var message = JSON.parse(arguments[0].responseText).message;
-	//			alert(message);
-	//			$('#modal_win').remove();
-	//		}
-	//	},
-	//	dataType: 'json'
-	//});
+	elem.siblings('.controls').hide();
+	elem.siblings('.post_content').after($('<p title="Save changes" class="commands save_command"><span id = "btnSavePost" data-val="' + postID +'" class= "glyphicon glyphicon-floppy-saved"></span>\
+		<span title="Cancel changes" id="btnCancelPost" class= "glyphicon glyphicon-remove-sign"></span></p>'));
+});
+
+$(document.body).on('click', '#btnSavePost', function (e) {
+	var button = $(e.currentTarget);
+	var postID = button.data('val');
+	var text = $('#newText').val().trim();
+	if (!text.length) {
+		return alert('Text can not be empty.');
+	}
+
+	$.ajax({
+		type: "POST",
+		url: '/Posts/UpdatePost',
+		data: {
+			PostID: button.data('val'),
+			Text: text
+		},
+		success: function (item) {
+			$('#newText').remove();
+			var postCont = button.parent().siblings('.post_content');
+			postCont.text(item.Text).show();
+			postCont.siblings('.save_command').remove();
+			postCont.siblings('.commands.controls').show();
+		},
+		error: function (xhr) {
+			if (500 === xhr.status) {
+				var message = JSON.parse(arguments[0].responseText).message;
+				alert(message);
+				$('#modal_win').remove();
+			}
+		},
+		dataType: 'json'
+	});
+});
+
+$(document.body).on('click', '#btnCancelPost', function (e) {
+	var button = $(e.currentTarget);
+	var postCont = button.parent().siblings('.post_content');
+	$('#newText').remove();
+	postCont.show();
+	postCont.siblings('.save_command').remove();
+	postCont.siblings('.commands.controls').show();
 });

@@ -56,6 +56,33 @@ namespace ForumApp.Controllers
 			return this.Json(vm);
 		}
 
+		[FormatException]
+		public JsonResult UpdatePost(int postID, string text)
+		{
+			try
+			{
+				using (SqlConnection con = new SqlConnection(ConnectionString))
+				{
+					using (SqlCommand cmd = new SqlCommand("UpdatePost", con))
+					{
+						cmd.CommandType = CommandType.StoredProcedure;
+						cmd.Parameters.Add("@PostID", SqlDbType.Int).Value = postID;
+						cmd.Parameters.Add("@Text", SqlDbType.NVarChar).Value = text;
+
+						con.Open();
+						cmd.ExecuteReader();
+						con.Close();
+					}
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new HttpException("You don't have access. Please login to continue", ex);
+			}
+
+			return Json(new { PostID = postID, Text = text });
+		}
+
 		public JsonResult RemovePost(int postID)
 		{
 			try

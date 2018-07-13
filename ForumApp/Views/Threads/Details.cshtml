@@ -43,14 +43,11 @@
 														</p>
 														@if (AppManager.GetCurrentUserID() == item.UserID)
 														{
-															<p class="commands">
+															<p class="commands controls">
 																<span id="btnEditPost" data-val="@(item.PostID)" class="glyphicon glyphicon-edit"></span>
 																<span id="btnDeletePost" data-val="@(item.PostID)" class="glyphicon glyphicon-remove"></span>
 															</p>
-														}
-														<p class="save_command">
-															<span id="btnSavePost" data-val="@(item.PostID)" class="glyphicon glyphicon-save"></span>
-														</p>
+														}														
 														<p class="commands date">
 															<span>Posted on: @item.PostCreated</span>
 														</p>
