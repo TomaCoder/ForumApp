@@ -18,7 +18,7 @@
 	<div class="row">
 		<section class="content">
 			<div class="col-md-8 col-md-offset-2">
-				<button type="button" id="btnSort" data-val="ASC" class="btn btn-primary btn-sort">Sort Asc</button>
+				<button type="button" id="btnSort" data-val="ASC" class="btn btn-primary btn-sort">Sort</button>
 				<div class="panel panel-default">
 					<div class="panel-body">
 						<div class="table-container">
@@ -48,6 +48,9 @@
 																<span id="btnDeletePost" data-val="@(item.PostID)" class="glyphicon glyphicon-remove"></span>
 															</p>
 														}
+														<p class="save_command">
+															<span id="btnSavePost" data-val="@(item.PostID)" class="glyphicon glyphicon-save"></span>
+														</p>
 														<p class="commands date">
 															<span>Posted on: @item.PostCreated</span>
 														</p>

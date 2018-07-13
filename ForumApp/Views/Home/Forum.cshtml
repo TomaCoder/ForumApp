@@ -38,7 +38,8 @@
 										<h5>
 											<a>@item.NickName</a>
 										</h5>
-										<small>Last post: @(string.IsNullOrEmpty(item.ThreadName) ? "" : "Re: " + item.ThreadName)</small>
+										<small>Last post: @(string.IsNullOrEmpty(item.ThreadName) ? "" : "Re: " + item.ThreadName)</small><br/>
+										<small>Last posted on: @(item.PostCreatedOn)</small>
 										<br />
 									}
 								</div>

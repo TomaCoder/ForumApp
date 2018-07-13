@@ -43,6 +43,7 @@
 					var postCont = !item.NumPosts ? '<h5>No posts Yet</h5>' :
 								'<h5><a>' + item.NickName + '</a></h5>\
 								<small>Last post:' + (item.ThreadName ? "" : "Re: " + item.ThreadName) + '</small>\
+								<small>Last posted on:'+ item.PostCreatedOn + '</small>\
 								<br />';
 
 					var addedItem =
@@ -59,10 +60,6 @@
 										<div class="text_block post_count">' + postCont + '</div>\
 										<div class="text_block">\
 											<a>Total replies: ' + (item.NumPosts || 0) + '</a>\
-											<p class="commands topic_commands">\
-												<span class="glyphicon glyphicon-edit"></span>\
-												<span class="glyphicon glyphicon-remove"></span>\
-											</p>\
 										</div>\
 									</div>\
 								</div>\
@@ -399,7 +396,7 @@ $(document.body).on('click', '#btnEditPost', function (e) {
 	var text = elem.val();
 	elem.hide();
 	elem.after('<textarea class="post_content" id="newText">' + text + '</textarea>');
-
+	//save_command
 	//$.ajax({
 	//	type: "POST",
 	//	url: '/Posts/UpdatePost',

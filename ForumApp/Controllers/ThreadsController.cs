@@ -99,6 +99,7 @@ namespace ForumApp.Controllers
 		}
 
 		[FormatException]
+		[Authorization("Admin")]
 		public JsonResult StartThread(int threadID)
 		{
 			ThreadViewModel vm = null;
@@ -142,6 +143,7 @@ namespace ForumApp.Controllers
 		}
 
 		[FormatException]
+		[Authorization("Admin")]
 		public JsonResult CloseThread(int threadID)
 		{
 			ThreadViewModel vm = null;
